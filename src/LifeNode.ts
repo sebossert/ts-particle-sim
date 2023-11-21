@@ -11,7 +11,7 @@ export class LifeNode {
     constructor(nodeType: NodeType, position: Position) {
         this.nodeType = nodeType;
         this.position = position;
-        this.movement = { x: 0, y: 0 }
+        this.movement = new Position()
     }
     update(nodes: LifeNode[]) {
         for (let i = 0; i < nodes.length; i++) {

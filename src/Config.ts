@@ -1,7 +1,7 @@
 export class Config {
-    static width: number = 800
-    static height: number = 400
-    static nodeCount: number = 150
+    static width: number = 150
+    static height: number = 150
+    static nodeCount: number = 10
     private constructor() {
 
     }

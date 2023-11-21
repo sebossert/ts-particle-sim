@@ -7,7 +7,7 @@ console.log('life.js loaded')
 
 const canvas = document.getElementById('canvas');
 const context = canvas.getContext('2d')
-// context.scale(2, 2);
+context.scale(1.5, 1.5);
 const nodes = createLifeNodes(Config.width, Config.height, Config.nodeCount)
 const world = new World()
 for (let i = 0; i < nodes.length; i++) {
@@ -22,7 +22,7 @@ setInterval(update, 200)
  * @param {CanvasRenderingContext2D } context 
  */
 function updateCanvas(context) {
-    context.clearRect(0, 0, Config.width, Config.height)
+    context.clearRect(0, 0, 800, 800)
     for (let i = 0; i < world.nodes.length; i++) {
         const node = nodes[i]
         let fill = NodeType[node.nodeType]

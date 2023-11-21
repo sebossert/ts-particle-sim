@@ -1,7 +1,7 @@
 export class Config {
+    static width = 150;
+    static height = 150;
+    static nodeCount = 10;
     constructor() {
     }
 }
-Config.width = 800;
-Config.height = 400;
-Config.nodeCount = 150;

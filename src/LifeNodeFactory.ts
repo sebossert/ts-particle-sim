@@ -22,7 +22,7 @@ function randomPosition(xMax: number, yMax: number): Position {
 }
 
 function randomNodeType(): NodeType {
-    const rand = Math.floor(Math.random() * 4);
+    const rand = Math.floor(Math.random() * 5);
     if (rand > 3) {
         return NodeType.Black
     }

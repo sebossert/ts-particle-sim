@@ -1,11 +1,15 @@
+import { Position } from "./Position.js";
 import nodeInteractions from "./NodeInteractions.js";
 import { NodeInteraction } from "./NodeInteraction.js";
 import { Config } from "./Config.js";
 export class LifeNode {
+    nodeType;
+    position;
+    movement;
     constructor(nodeType, position) {
         this.nodeType = nodeType;
         this.position = position;
-        this.movement = { x: 0, y: 0 };
+        this.movement = new Position();
     }
     update(nodes) {
         for (let i = 0; i < nodes.length; i++) {
