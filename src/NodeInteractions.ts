@@ -1,40 +1,40 @@
+import { Config } from "./Config.js"
 import { NodeType } from "./NodeType.js"
-import { NodeInteraction } from "./NodeInteraction.js"
 
 export default {
     [NodeType.Red]: {
-        [NodeType.Black]: NodeInteraction.None,
-        [NodeType.White]: NodeInteraction.None,
-        [NodeType.Red]: NodeInteraction.Pull,
-        [NodeType.Green]: NodeInteraction.Push,
-        [NodeType.Blue]: NodeInteraction.None,
+        [NodeType.Black]: 0,
+        [NodeType.White]: 0,
+        [NodeType.Red]: Config.g,
+        [NodeType.Green]: -Config.g,
+        [NodeType.Blue]: 0,
     },
     [NodeType.Green]: {
-        [NodeType.Black]: NodeInteraction.None,
-        [NodeType.White]: NodeInteraction.None,
-        [NodeType.Red]: NodeInteraction.None,
-        [NodeType.Green]: NodeInteraction.Pull,
-        [NodeType.Blue]: NodeInteraction.Push,
+        [NodeType.Black]: 0,
+        [NodeType.White]: 0,
+        [NodeType.Red]: 0,
+        [NodeType.Green]: Config.g,
+        [NodeType.Blue]: -Config.g,
     },
     [NodeType.Blue]: {
-        [NodeType.Black]: NodeInteraction.None,
-        [NodeType.White]: NodeInteraction.None,
-        [NodeType.Red]: NodeInteraction.Push,
-        [NodeType.Green]: NodeInteraction.None,
-        [NodeType.Blue]: NodeInteraction.Pull,
+        [NodeType.Black]: 0,
+        [NodeType.White]: 0,
+        [NodeType.Red]: -Config.g,
+        [NodeType.Green]: 0,
+        [NodeType.Blue]: Config.g,
     },
     [NodeType.Black]: {
-        [NodeType.Black]: NodeInteraction.Pull,
-        [NodeType.White]: NodeInteraction.Push,
-        [NodeType.Red]: NodeInteraction.None,
-        [NodeType.Green]: NodeInteraction.None,
-        [NodeType.Blue]: NodeInteraction.None,
+        [NodeType.Black]: Config.g,
+        [NodeType.White]: 0,
+        [NodeType.Red]: 0,
+        [NodeType.Green]: 0,
+        [NodeType.Blue]: 0,
     },
     [NodeType.White]: {
-        [NodeType.Black]: NodeInteraction.Push,
-        [NodeType.White]: NodeInteraction.Pull,
-        [NodeType.Red]: NodeInteraction.None,
-        [NodeType.Green]: NodeInteraction.None,
-        [NodeType.Blue]: NodeInteraction.None,
+        [NodeType.Black]: 0,
+        [NodeType.White]: Config.g,
+        [NodeType.Red]: 0,
+        [NodeType.Green]: 0,
+        [NodeType.Blue]: 0,
     }
 }

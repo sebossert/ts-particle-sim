@@ -1,6 +1,6 @@
 import { Config } from "./Config.js";
 import { LifeNode } from "./LifeNode.js";
-import { Position } from "./Position.js";
+import { Vector } from "./Vector.js";
 
 export class World {
     nodes: LifeNode[];
@@ -11,49 +11,52 @@ export class World {
     }
     update() {
         for (let i = 0; i < this.nodes.length; i++) {
-            const node = this.nodes[i]
-            node.update(this.nodes)
+            this.nodes[i].interact(this.nodes)
         }
         for (let i = 0; i < this.nodes.length; i++) {
-            const node = this.nodes[i]
-            this.move(node)
+            this.nodes[i].collide(this.nodes)
         }
+        for(let i = 0; i < this.nodes.length; i++) {
+            this.nodes[i].move()
+        }
+        // interact with other nodes
+        // calculate collision
+        // move
+        // for (let i = 0; i < this.nodes.length; i++) {
+        //     const node = this.nodes[i]
+        //     this.move(node)
+        // }
     }
     move(node: LifeNode) {
-        const newPosition = new Position(
-            node.position.x + node.movement.x,
-            node.position.y + node.movement.y,
+        const newPosition = new Vector(
+            node.position.x + node.velocity.x,
+            node.position.y + node.velocity.y,
         )
         if (this.isPositionFilled(newPosition)) {
-            console.error("Cannot move node to new position." + newPosition)
-            node.movement.x = 0; node.movement.y = 0;
+            console.error("Cannot move node to new position." + newPosition.string())
+            node.velocity.x = 0; node.velocity.y = 0;
             return
         }
-        if (newPosition.x < 0 || newPosition.x > Config.width) {
-            newPosition.x = node.position.x + (-2) * node.movement.x
-        }
-        if (newPosition.y < 0 || newPosition.y > Config.height) {
-            newPosition.y = node.position.y + (-2) * node.movement.y
-        }
         if (this.isPositionFilled(newPosition)) {
-            console.error("Cannot move node to new position, after bounce." + newPosition)
-            node.movement.x = 0; node.movement.y = 0;
+            console.error("Cannot move node to new position, after bounce." + newPosition.string())
+            node.velocity.x = 0; node.velocity.y = 0;
             return
         }
         this.filledPositions.shift() // should work if called sequentially?
-        node.applyMovement();
+        node.move();
         this.filledPositions.push(newPosition.string())
     }
     addNode(node: LifeNode) {
         console.log('adding node')
         if (this.isPositionFilled(node.position)) {
+            console.error('adding node failed')
             return false
         }
         this.filledPositions.push(node.position.string())
         this.nodes.push(node)
         return true
     }
-    isPositionFilled(position: Position): boolean {
+    isPositionFilled(position: Vector): boolean {
         return this.filledPositions.includes(position.string())
     }
 }

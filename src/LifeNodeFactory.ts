@@ -1,6 +1,7 @@
 import { NodeType } from "./NodeType.js";
-import { Position } from "./Position.js";
+import { Vector } from "./Vector.js";
 import { LifeNode } from "./LifeNode.js";
+import { Config } from "./Config.js";
 
 export function createLifeNodes(xMax: number, yMax: number, nodeCount: number) {
     const nodes = []
@@ -14,15 +15,15 @@ export function createLifeNode(xMax: number, yMax: number): LifeNode {
     return new LifeNode(randomNodeType(), randomPosition(xMax, yMax))
 }
 
-function randomPosition(xMax: number, yMax: number): Position {
-    const pos = new Position();
+function randomPosition(xMax: number, yMax: number): Vector {
+    const pos = new Vector();
     pos.x = Math.floor(Math.random() * xMax)
     pos.y = Math.floor(Math.random() * yMax)
     return pos
 }
 
 function randomNodeType(): NodeType {
-    const rand = Math.floor(Math.random() * 5);
+    const rand = Math.floor(Math.random() * Config.blackChance);
     if (rand > 3) {
         return NodeType.Black
     }

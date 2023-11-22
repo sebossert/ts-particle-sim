@@ -1,54 +1,60 @@
 import { NodeType } from "./NodeType.js";
-import { Position } from "./Position.js";
+import { Vector } from "./Vector.js";
 import nodeInteractions from "./NodeInteractions.js"
-import { NodeInteraction } from "./NodeInteraction.js";
 import { Config } from "./Config.js";
 
 export class LifeNode {
     nodeType: NodeType;
-    position: Position;
-    movement: Position;
-    constructor(nodeType: NodeType, position: Position) {
+    position: Vector;
+    velocity: Vector;
+    constructor(nodeType: NodeType, position: Vector) {
         this.nodeType = nodeType;
         this.position = position;
-        this.movement = new Position()
+        this.velocity = new Vector()
     }
-    update(nodes: LifeNode[]) {
+    interact(nodes: LifeNode[]) {
         for (let i = 0; i < nodes.length; i++) {
-            this.interact(nodes[i]);
-        }
-    }
-    interact(node: LifeNode) {
-        if (this === node) {
-            return;
-        }
-        let interaction = nodeInteractions[this.nodeType][node.nodeType];
+            const node = nodes[i];
+            if (this === node) break
 
-        switch (interaction) {
-            case NodeInteraction.Pull:
-                this.pull(node);
-                break;
-            case NodeInteraction.Push:
-                this.push(node);
-                break;
+            const interaction = nodeInteractions[this.nodeType][node.nodeType];
+            if (interaction !== 0) {
+                node.velocity.x += interaction * getDeltaXModifier(this, node);
+                node.velocity.y += interaction * getDeltaYModifier(this, node);
+            }
         }
     }
-    push(node: LifeNode): void {
-        node.movement.x -= getDeltaX(this, node);
-        node.movement.y -= getDeltaY(this, node);
+    collide(nodes: LifeNode[]) {
+        const nextPosition = this.nextPosition();
+        for (let i = 0; i < nodes.length; i++) {
+            const node = nodes[i];
+            if (this === node) break
+            if (nextPosition.equals(node.nextPosition())) {
+                const newVelocity = Vector.add(this.velocity, node.velocity)
+                node.velocity.add(this.velocity)
+                this.velocity = newVelocity
+            }
+        }
+        if (nextPosition.x < 0 || nextPosition.x > Config.width) {
+            this.velocity.x = -this.velocity.x
+        } else if (nextPosition.y < 0 || nextPosition.y > Config.height) {
+            this.velocity.y = -this.velocity.y
+        }
+
     }
-    pull(node: LifeNode): void {
-        node.movement.x += getDeltaX(this, node);
-        node.movement.y += getDeltaY(this, node);
+    nextPosition(): Vector {
+        return new Vector(
+            this.position.x + this.velocity.x,
+            this.position.y + this.velocity.y
+        )
     }
-    applyMovement(): void {
-        this.position.x = Math.min(Config.width, Math.max(0, this.position.x + this.movement.x))
-        this.position.y = Math.min(Config.height, Math.max(0, this.position.y + this.movement.y))
-        this.movement.x = 0; this.movement.y = 0;
+    move(): void {
+        this.position = this.nextPosition()
+        // this.velocity.x = 0; this.velocity.y = 0;
     }
 }
 
-function getDeltaX(source: LifeNode, target: LifeNode): number {
+function getDeltaXModifier(source: LifeNode, target: LifeNode): number {
     if (source.position.x > target.position.x) {
         return 1;
     }
@@ -58,7 +64,7 @@ function getDeltaX(source: LifeNode, target: LifeNode): number {
     return 0;
 }
 
-function getDeltaY(source: LifeNode, target: LifeNode): number {
+function getDeltaYModifier(source: LifeNode, target: LifeNode): number {
     if (source.position.y > target.position.y) {
         return 1;
     }
