@@ -16,7 +16,12 @@ export class Vector {
         return this.x + ',' + this.y;
     }
     equals(vector) {
-        return this.x == vector.x && this.y == vector.y;
+        return Math.round(this.x) == Math.round(vector.x) && Math.round(this.y) == Math.round(vector.y);
+    }
+    resize(newSize) {
+        const factor = newSize / this.size();
+        this.x *= factor;
+        this.y *= factor;
     }
     static add(a, b) {
         return new Vector(a.x + b.x, a.y + b.y);

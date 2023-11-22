@@ -1,10 +1,14 @@
 export class Config {
-    static width = 300;
-    static height = 300;
-    static nodeCount = 2000;
-    static blackChance = 30;
-    static refreshRate = 10;
-    static g = Math.pow(6.67408, -4);
+    static instance = new Config();
+    width = 300;
+    height = 300;
+    nodeCount = 2000;
+    blackChance = 30;
+    refreshRate = 10;
+    canvasScale = 1;
+    clearRect = false;
+    terminalVelocity = 10; // 29.9792458
+    g = 0.00067; //Math.pow(6.67408, -4)
     constructor() {
     }
 }

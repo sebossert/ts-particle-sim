@@ -23,7 +23,7 @@ function randomPosition(xMax: number, yMax: number): Vector {
 }
 
 function randomNodeType(): NodeType {
-    const rand = Math.floor(Math.random() * Config.blackChance);
+    const rand = Math.floor(Math.random() * Config.instance.blackChance);
     if (rand > 3) {
         return NodeType.Black
     }

@@ -19,7 +19,7 @@ function randomPosition(xMax, yMax) {
     return pos;
 }
 function randomNodeType() {
-    const rand = Math.floor(Math.random() * Config.blackChance);
+    const rand = Math.floor(Math.random() * Config.instance.blackChance);
     if (rand > 3) {
         return NodeType.Black;
     }

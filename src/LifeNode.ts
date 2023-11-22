@@ -29,20 +29,28 @@ export class LifeNode {
         for (let i = 0; i < nodes.length; i++) {
             const node = nodes[i];
             if (this === node) break
-            if (nextPosition.equals(node.nextPosition())) {
+            if (this.nodeType == node.nodeType && nextPosition.equals(node.nextPosition())) {
                 const newVelocity = Vector.add(this.velocity, node.velocity)
                 node.velocity.add(this.velocity)
                 this.velocity = newVelocity
             }
         }
-        if (nextPosition.x < 0 || nextPosition.x > Config.width) {
-            this.velocity.x = -this.velocity.x
-        } else if (nextPosition.y < 0 || nextPosition.y > Config.height) {
-            this.velocity.y = -this.velocity.y
+        if (nextPosition.x < 0) {
+            this.velocity.x = Math.abs(this.velocity.x)
+        } else if (nextPosition.x > Config.instance.width) {
+            this.velocity.x = -Math.abs(this.velocity.x)
+        }
+        if (nextPosition.y < 0) {
+            this.velocity.y = Math.abs(this.velocity.y)
+        } else if (nextPosition.y > Config.instance.height) {
+            this.velocity.y = -Math.abs(this.velocity.y)
         }
 
     }
     nextPosition(): Vector {
+        if (this.velocity.size() > Config.instance.terminalVelocity) {
+            this.velocity.resize(Config.instance.terminalVelocity)
+        }
         return new Vector(
             this.position.x + this.velocity.x,
             this.position.y + this.velocity.y
